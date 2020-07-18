@@ -30,15 +30,16 @@ router.delete('/:id', (req, res) => {
 
 router.post('/', (req, res, next) => {
     let user = req.body
-    let sql = "SET @id = ?; SET @fullname = ?; SET @email = ?; SET @whatsapp = ?; SET @provider = ?; SET @packet = ?; \
-    CALL AddRegisteredUser(@id,@fullname,@email,@whatsapp,@provider, @packet);" 
+    let sql = "SET @id = ?; SET @fullname = ?; SET @email = ?; SET @whatsapp = ?; SET @provider = ?; SET @packet = ?; SET @price = ?; \
+    CALL AddRegisteredUser(@id,@fullname,@email,@whatsapp,@provider,@packet,@price);" 
     seakunConn.query(sql, [
         user.id, 
         user.fullname, 
         user.email, 
         user.whatsapp, 
         user.provider, 
-        user.packet
+        user.packet,
+        user.price
     ], (err, rows, fields) => {
         if (!err) {
             rows.forEach(element => {

@@ -11,20 +11,23 @@ seakunConn.connect((err) => {
 })
 
 router.get('/', (req, res, next) => {
-    seakunConn.query('SELECT * FROM seakundb.registration', (err, rows, fields) => {
-        if (!err)
-        res.send(rows)
-        else
-        console.log(err)
+    seakunConn.query('SELECT * FROM seakundb.registration', async (err, rows, fields) => {
+        if (!err) {
+            const responseRows = await rows
+            res.send(responseRows)
+        } else {
+            console.log(err)
+        }
     })
 })
 
 router.delete('/:id', (req, res) => {
-    seakunConn.query('DELETE FROM seakundb.registration WHERE id = ?', [req.params.id] , (err, rows, fields) => {
-        if (!err)
-        res.send('Deleted Successfully')
-        else
-        console.log(err)
+    seakunConn.query('DELETE FROM seakundb.registration WHERE id = ?', [req.params.id], async (err, rows, fields) => {
+        if (!err) {
+            res.send('Deleted Successfully')
+        } else {
+            console.log(err)
+        }
     })
 })
 
@@ -40,12 +43,21 @@ router.post('/', (req, res, next) => {
         user.provider, 
         user.packet,
         user.price
-    ], (err, rows, fields) => {
+    ], async (err, rows, fields) => {
         if (!err) {
-            rows.forEach(element => {
-                if (element.constructor == Array)
-                res.send('Inserted user id : ' +element[0].id)
-            });
+            let result = {
+                code: 200,
+                message: '',
+                status: 'success',
+                data: null
+            }
+            const responseRows = await rows
+            responseRows.forEach(element => {
+                if (element.constructor == Array) {
+                    result.message = 'Inserted user id : ' +element[0].id
+                    res.send(result)
+                }
+            })
         }
         else {
             console.log(err)

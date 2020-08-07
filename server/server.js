@@ -4,19 +4,11 @@ const cors = require('cors')
 
 const app = express()
 
-app.use(cors({
-    origin:['http://localhost:4000','https://seakun.is'],
-    credentials:true
-}))
-
-app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-});
+app.use(cors())
 
 app.use(express.json())
 
+app.options('/registered-user', cors())
 app.use('/registered-user', apiRouter)
 
 app.listen(process.env.PORT || '4000', () => {

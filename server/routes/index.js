@@ -1,5 +1,9 @@
 const express = require('express')
 const Established = require('../db')
+const {GoogleSpreadsheet} = require('google-spreadsheet')
+const credentials = require('../client_secret.json')
+const { json } = require('body-parser')
+const doc = new GoogleSpreadsheet('1HJDHVARMw-qIF6NYb5bVIGSFHvyh-LBIsJsSlOHlBHs')
 
 const router = express.Router()
 
@@ -24,6 +28,29 @@ router.get('/', (req, res, next) => {
             }
         })
     })
+})
+
+router.get('/group', async (req, res, next) => {
+    let customers = []
+    await doc.useServiceAccountAuth({
+        client_email: credentials.client_email,
+        private_key: credentials.private_key,
+    });
+    await doc.loadInfo()
+    const sheet = doc.sheetsByIndex[2];
+    const rows = await sheet.getRows()
+    if (rows) {
+        rows.forEach(row => {
+            let customer = {
+                'group': row._rawData[0],
+                'customer_name': row._rawData[1],
+                'customer_email': row._rawData[2],
+                'provider': row._rawData[3]
+            }
+            customers.push(customer)
+        })
+    }
+    res.send(customers)
 })
 
 router.delete('/:id', (req, res) => {

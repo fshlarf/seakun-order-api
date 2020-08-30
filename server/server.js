@@ -13,6 +13,6 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 app.use('/registered-user', apiRouter)
 
-app.listen(process.env.PORT || '4001', () => {
-    console.log(`Server is running on port: ${process.env.PORT || '4001'}`);
+app.listen(process.env.PORT || '4000', () => {
+    console.log(`Server is running on port: ${process.env.PORT || '4000'}`);
 })

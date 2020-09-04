@@ -37,7 +37,7 @@ router.get('/group', async (req, res, next) => {
         private_key: credentials.private_key,
     });
     await doc.loadInfo()
-    const sheet = doc.sheetsByIndex[2];
+    const sheet = doc.sheetsByIndex[0];
     const rows = await sheet.getRows()
     if (rows) {
         rows.forEach(row => {

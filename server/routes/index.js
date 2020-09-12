@@ -44,8 +44,9 @@ router.get('/group', async (req, res, next) => {
             let customer = {
                 'group': row._rawData[0],
                 'customer_name': row._rawData[1],
-                'customer_email': row._rawData[2],
-                'provider': row._rawData[3]
+                'provider': row._rawData[2],
+                'email': row._rawData[3],
+                'start_date': row._rawData[4]
             }
             customers.push(customer)
         })
